@@ -1,0 +1,12 @@
+# Ignore EmergentXXXXXXXXXXXXX-_ELF directory
+.EmergentXXXXXXXXXXXXX-_ELF/
+
+# Ignore backup directory
+backup/
+
+# Common ignore patterns
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
