@@ -13,6 +13,7 @@
  * (NOT Claude Code's "PreToolUse/PostToolUse")
  */
 
+
 import { tool } from "@opencode-ai/plugin";
 import { promises as fs } from 'fs';
 const ELF_CLEANUP_CONFIG_PATH = "/home/bamer/.opencode/emergent-learning/elf_cleanup_config.json";
