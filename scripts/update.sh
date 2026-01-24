@@ -8,9 +8,9 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 ELF_REPO="$ROOT_DIR/Emergent-Learning-Framework_ELF"
 PLUGIN_SRC="$ROOT_DIR/ELF_superpowers_plug.js"
 
-OPENCODE_DIR="$HOME/.opencode"
+OPENCODE_DIR="${OPENCODE_DIR:-$HOME/.opencode}"
 OPENCODE_PLUGIN_DIR="$OPENCODE_DIR/plugin"
-ELF_INSTALL_DIR="$OPENCODE_DIR/emergent-learning"
+ELF_INSTALL_DIR="${ELF_BASE_PATH:-$OPENCODE_DIR/emergent-learning}"
 
 BACKUP_DATE="$(date +%Y-%m-%d_%H-%M-%S)"
 BACKUP_DIR="$ROOT_DIR/backups/$BACKUP_DATE"
@@ -87,7 +87,7 @@ if [ ! -x "./install.sh" ]; then
   chmod +x ./install.sh
 fi
 
-./install.sh
+OPENCODE_DIR="$OPENCODE_DIR" ELF_BASE_PATH="$ELF_INSTALL_DIR" ./install.sh
 
 # =========================
 # 6. BASIC VALIDATION
@@ -109,4 +109,3 @@ echo " OPC-ELF UPDATE COMPLETED SUCCESSFULLY"
 echo " Backup stored in:"
 echo "   $BACKUP_DIR"
 echo "========================================"
-
