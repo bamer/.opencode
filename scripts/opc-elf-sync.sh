@@ -96,7 +96,36 @@ echo "-- Running ELF installer"
 if [ ! -x "./install.sh" ]; then
   chmod +x ./install.sh
 fi
-OPENCODE_DIR="$OPENCODE_DIR" ELF_BASE_PATH="$ELF_INSTALL_DIR" ./install.sh --mode merge
+
+# Run installer but ignore seed_golden_rules errors (we'll fix DB and retry)
+OPENCODE_DIR="$OPENCODE_DIR" ELF_BASE_PATH="$ELF_INSTALL_DIR" ./install.sh --mode merge || {
+  installer_exit=$?
+  echo ""
+  echo "⚠️  Installer had issues (exit code: $installer_exit)"
+  echo "   This may be due to database schema issues, attempting to repair..."
+}
+
+# Fix database schema if needed (handles old NULL values in NOT NULL columns)
+echo "-- Checking database integrity"
+if [ -f "$ELF_INSTALL_DIR/memory/index.db" ] || [ -f "$ELF_INSTALL_DIR/.env/.sqlite" ]; then
+  echo "   Repairing database schema if needed..."
+  OPENCODE_DIR="$OPENCODE_DIR" ELF_BASE_PATH="$ELF_INSTALL_DIR" bash "$ROOT_DIR/scripts/fix-database.sh" 2>&1 | grep -E "^(✅|⚠️)" || true
+  
+  # Retry seeding after repair
+  echo ""
+  echo "-- Retrying golden rules seeding after repair..."
+  if [ -f "$ELF_INSTALL_DIR/.venv/bin/python" ]; then
+    python_cmd="$ELF_INSTALL_DIR/.venv/bin/python"
+  else
+    python_cmd="python3"
+  fi
+  
+  if [ -f "$ELF_REPO/scripts/seed_golden_rules.py" ]; then
+    $python_cmd "$ELF_REPO/scripts/seed_golden_rules.py" --db-path "$ELF_INSTALL_DIR/memory/index.db" 2>&1 | grep -E "^(Found|✅|ERROR)" || true
+  fi
+else
+  echo "   Database not yet created"
+fi
 
 echo "-- Installing OpenCode plugin"
 if [ ! -f "$PLUGIN_SRC" ]; then

@@ -9,6 +9,8 @@
 - **Validate setup**: `./scripts/validate-setup.sh` (optional, for troubleshooting)
 - **Sync** (update + backup + clean + install + plugin): `./scripts/opc-elf-sync.sh`
   - Performs git fetch, resets to upstream, cleans Claude references, applies patches, installs plugin, validates cleanup
+- **Fix database** (if integrity issues): `OPENCODE_DIR=$HOME/.opencode ELF_BASE_PATH=$HOME/.opencode/emergent-learning bash ./scripts/fix-database.sh`
+  - Repairs NULL values in NOT NULL columns, backs up database
 - **Preserve customizations**: `./scripts/preserve-customizations.sh {backup|restore|patch}`
 - **Regenerate patches** (if upstream changed): `./scripts/regenerate-patches.sh {launcher.py|start-watcher.sh}`
 - **Reset ELF repo** (if branches diverged): `./scripts/reset-elf-repo.sh`
