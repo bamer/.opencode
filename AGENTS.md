@@ -10,10 +10,10 @@
 - Tests (upstream): `cd Emergent-Learning-Framework_ELF && make test`
 - Lint (upstream): `cd Emergent-Learning-Framework_ELF && make lint`
 
-## Architecture
-- Upstream repo: `Emergent-Learning-Framework_ELF/` (Python core + dashboard).
-- OpenCode plugin: `ELF_superpowers_plug.js` copied to `~/.opencode/plugin/`.
-- Update orchestration: `scripts/opc-elf-sync.sh` + backups in `backups/`.
+## GitHub-Style Patches
+- Patch directory: `scripts/patches/` contains GitHub-style patch files
+- `launcher-openaai.patch`: Adds OpenAI-compatible launcher for watcher
+- `opencode-plugin.patch`: Adds OpenCode plugin with ELF hooks
 
 ## Style
 - Shell scripts: bash strict mode (`set -euo pipefail`), keep paths configurable via env vars.

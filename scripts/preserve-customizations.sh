@@ -263,6 +263,7 @@ def call_openai(base_url: str, model: str, prompt: str) -> str:\
 # Function to apply start-watcher.sh patch
 apply_start_watcher_patch() {
     local start_watcher_file="$ELF_REPO/tools/scripts/start-watcher.sh"
+    local patch_file="$ROOT_DIR/scripts/patches/start-watcher-openaai.patch"
 
     if [ ! -f "$start_watcher_file" ]; then
         echo "start-watcher.sh not found, cannot apply patch"
@@ -280,7 +281,17 @@ apply_start_watcher_patch() {
     # Create backup
     cp "$start_watcher_file" "$start_watcher_file.bak"
 
-    # Apply surgical patch using sed - replace only the specific lines
+    # Try to apply patch file first
+    if [ -f "$patch_file" ]; then
+        if patch -p1 < "$patch_file" > /dev/null 2>&1; then
+            echo "Patch applied successfully using patch command"
+            return
+        else
+            echo "Patch file failed, falling back to surgical sed patching..."
+        fi
+    fi
+
+    # Fallback to surgical sed patching if patch command fails
     sed -i '34c# Check for ANTHROPIC_API_KEY or OpenAI-compatible base URL' "$start_watcher_file"
     sed -i '35cif [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$OPENCODE_WATCHER_BASE_URL" ] && [ -z "$OPENAI_BASE_URL" ]; then' "$start_watcher_file"
     sed -i '36c    echo "Error: ANTHROPIC_API_KEY or OPENCODE_WATCHER_BASE_URL is required"' "$start_watcher_file"
