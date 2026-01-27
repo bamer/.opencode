@@ -108,6 +108,8 @@ See:
 - `Spec.md` - Technical details
 - `AGENTS.md` - Commands and style
 - `VERIFICATION_REPORT.md` - What's been tested
+- `WORKFLOW_GUIDE.md` - Step-by-step workflow explanation
+- `WORKFLOW_FLOWCHART.md` - Visual workflow diagrams
 
 ## Next Steps
 
@@ -125,6 +127,25 @@ See:
 ./scripts/reset-elf-repo.sh
 ```
 
+## Understanding the Workflow
+
+For a comprehensive understanding of how OpenCode-ELF works:
+
+1. **Read the simplified workflow guide**: `WORKFLOW_GUIDE.md`
+   - Clear 6-step process explanation
+   - Simplified component descriptions
+   - Focused troubleshooting examples
+
+2. **View the simplified flowcharts**: `WORKFLOW_FLOWCHART.md`
+   - Clean Mermaid diagrams showing the streamlined process
+   - Simplified component interaction diagrams
+   - Straightforward state diagrams
+
+3. **Quick reference**: The simplified workflow follows this sequence:
+   ```
+   Backup → Fetch → Cleanup → Install → Plugin → Validate
+   ```
+
 ## License & Attribution
 
 This wrapper integrates:
@@ -135,4 +156,4 @@ This wrapper integrates:
 
 🟢 **Ready for Production**
 
-All features implemented, tested, and documented.
+All features implemented, tested, and documented. The new workflow guides provide comprehensive documentation to make the system more understandable and easier to use.
