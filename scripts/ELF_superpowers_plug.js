@@ -449,7 +449,7 @@ export const ELFHooksPlugin = async ({ client, $ }) => {
         args: {},
         execute: async (args, ctx) => {
           try {
-            const result = await $`${CHECKIN_QUERY}`.quiet();
+            const result = await $`${CHECKIN_QUERY}`;
             if (result.exitCode === 0) {
               sessionCheckinDone = true;
               return "✅ ELF Check-In Complete\nContext, golden rules, and heuristics loaded from the building.";
