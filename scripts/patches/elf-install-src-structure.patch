@@ -1,0 +1,19 @@
+--- tools/setup/install.sh.orig	2026-01-27 12:00:00.000000000 +0700
++++ tools/setup/install.sh	2026-01-27 13:00:00.000000000 +0700
+@@ -335,13 +335,9 @@
+     echo "[ELF] Installing core files to $ELF_DIR..."
+     mkdir -p "$ELF_DIR"
+ 
+-    # Copy src contents (flattening)
++    # Copy src directory (preserving src/ structure)
+     if [ -d "$SCRIPT_DIR/../../src" ]; then
+-        cp -r "$SCRIPT_DIR/../../src/"* "$ELF_DIR/"
++        cp -r "$SCRIPT_DIR/../../src/" "$ELF_DIR/src"
+     fi
+-    # Also copy elf_paths.py explicit check (though it is in src, ensuring presence)
+-    if [ -f "$SCRIPT_DIR/../../src/elf_paths.py" ]; then
+-        cp "$SCRIPT_DIR/../../src/elf_paths.py" "$ELF_DIR/"
+-    fi
+ 
+     # Copy scripts
+     mkdir -p "$ELF_DIR/scripts"

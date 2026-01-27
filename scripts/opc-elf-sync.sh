@@ -50,8 +50,56 @@ git reset --hard origin/main || {
     exit 1
 }
 
-# Step 3: Apply Claude→OpenCode Cleanup
-echo "-- Cleanup Phase: Claude→OpenCode"
+# Step 3: Fix permissions (may be lost during git reset or patching)
+echo "-- Permissions Phase: Ensure executable scripts"
+chmod 755 tools/setup/install.sh install.sh scripts/apply-*.sh 2>/dev/null || true
+chmod 644 templates/AGENTS.md.template 2>/dev/null || true
+echo "   ✅ Script permissions restored"
+
+# Step 4: Apply Custom Patches
+echo "-- Patch Phase: Custom Fixes"
+
+# Apply install.sh structure fix (preserve src/ directory structure)
+echo "   Applying ELF install src structure patch"
+if [ -f "$ROOT_DIR/scripts/patches/elf-install-src-structure.patch" ]; then
+  if patch --dry-run tools/setup/install.sh < "$ROOT_DIR/scripts/patches/elf-install-src-structure.patch" > /dev/null 2>&1; then
+    if patch tools/setup/install.sh < "$ROOT_DIR/scripts/patches/elf-install-src-structure.patch" > /dev/null 2>&1; then
+      echo "   ✅ Install src structure patch applied"
+    else
+      echo "   ⚠️  Install src structure patch failed to apply (non-critical)"
+    fi
+  else
+    echo "   Install src structure patch already applied or skipped"
+  fi
+else
+  echo "   No install structure patch found (not critical)"
+fi
+
+# Apply install.sh settings deprecation (plugin system handles hooks now)
+echo "   Applying ELF install settings deprecation fix"
+if [ -f "$ROOT_DIR/scripts/apply-install-settings-deprecation.sh" ]; then
+  if bash "$ROOT_DIR/scripts/apply-install-settings-deprecation.sh" > /dev/null 2>&1; then
+    echo "   ✅ Install settings deprecation fix applied"
+  else
+    echo "   ⚠️  Install settings deprecation fix partially applied (non-critical)"
+  fi
+else
+  echo "   No install settings deprecation fix script found (non-critical)"
+fi
+
+# Apply seed_golden_rules.py fix (handle NOT NULL constraint issues)
+echo "   Applying seed_golden_rules fixes"
+if [ -f "$ROOT_DIR/scripts/apply-seed-golden-rules-fix.sh" ]; then
+  if bash "$ROOT_DIR/scripts/apply-seed-golden-rules-fix.sh" > /dev/null 2>&1; then
+    echo "   ✅ Seed golden rules fixes applied"
+  else
+    echo "   ⚠️  Seed golden rules fixes partially applied (non-critical)"
+  fi
+else
+  echo "   No seed golden rules fix script found (non-critical)"
+fi
+
+# Apply Claude→OpenCode Cleanup
 echo "   Applying Claude→OpenCode cleanup patch"
 if [ -f "$ROOT_DIR/scripts/patches/src-claude-cleanup.patch" ]; then
   if patch -p1 --dry-run < "$ROOT_DIR/scripts/patches/src-claude-cleanup.patch" > /dev/null 2>&1; then
@@ -90,9 +138,8 @@ echo "   ✅ Cleanup complete"
 
 # Step 4: Run ELF Installer
 echo "-- Install Phase: ELF Framework"
-if [ ! -x "./install.sh" ]; then
-  chmod +x ./install.sh
-fi
+# Ensure permissions are restored before running installer (patches may have reset them)
+chmod 755 ./install.sh tools/setup/install.sh 2>/dev/null || true
 
 OPENCODE_DIR="$OPENCODE_DIR" ELF_BASE_PATH="$ELF_INSTALL_DIR" ./install.sh  || {
   installer_exit=$?
