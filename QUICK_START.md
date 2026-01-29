@@ -100,12 +100,31 @@ A: Yes, set `OPENCODE_DIR` and `ELF_BASE_PATH` env vars.
 **Q: How long does it take?**
 A: Typically 2-5 minutes (depends on internet speed).
 
+## Start the Watcher
+
+The OpenCode watcher monitors the system with the `opencode/big-pickle` model:
+
+```bash
+# Test the watcher setup
+bash test-watcher.sh
+
+# Start watcher (interactive)
+cd emergent-learning
+./src/watcher/start-watcher.sh
+
+# Or start in daemon mode
+./src/watcher/start-watcher.sh --daemon
+```
+
+For detailed info: See `WATCHER_UPDATE.md`
+
 ## Next Steps
 
-1. **For detailed info**: Read `SETUP_CHECKLIST.md`
-2. **For troubleshooting**: See `AGENTS.md` → "If Patches Fail During Sync"
-3. **For architecture**: See `Spec.md`
-4. **For full details**: See `IMPLEMENTATION_SUMMARY.md`
+1. **For watcher details**: Read `WATCHER_UPDATE.md`
+2. **For detailed setup info**: Read `SETUP_CHECKLIST.md`
+3. **For troubleshooting**: See `AGENTS.md` → "If Patches Fail During Sync"
+4. **For architecture**: See `Spec.md`
+5. **For full details**: See `IMPLEMENTATION_SUMMARY.md`
 
 ## Still Having Issues?
 
@@ -115,3 +134,4 @@ Check these in order:
 3. Check `AGENTS.md` for your specific error
 4. See `SETUP_CHECKLIST.md` for manual fixes
 5. Review `IMPLEMENTATION_SUMMARY.md` → "Error Scenarios & Recovery"
+6. For watcher issues: `bash test-watcher.sh`

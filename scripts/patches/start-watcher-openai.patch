@@ -1,17 +1,68 @@
---- tools/scripts/start-watcher.sh.orig	2026-01-25 01:46:00.924377248 +0700
-+++ tools/scripts/start-watcher.sh	2026-01-25 01:46:29.288868147 +0700
-@@ -31,10 +31,10 @@
+--- a/src/watcher/start-watcher.sh
++++ b/src/watcher/start-watcher.sh
+@@ -1,10 +1,10 @@
+ #!/bin/bash
+ #
+-# Start the Tiered Watcher System
++# Start the OpenCode Watcher using big-pickle model
+ #
+ # Usage:
+ #   ./start-watcher.sh              # Start normally
+ #   ./start-watcher.sh --daemon     # Start in background
+ #
+ 
+-set -e
++set -euo pipefail
+ 
+@@ -24,17 +24,21 @@ else
  fi
  
- # Check for ANTHROPIC_API_KEY
+ # Check if launcher exists
+ if [ ! -f "$LAUNCHER_SCRIPT" ]; then
+     echo "Error: Launcher script not found at $LAUNCHER_SCRIPT"
+     exit 1
+ fi
+ 
+-# Check for ANTHROPIC_API_KEY
 -if [ -z "$ANTHROPIC_API_KEY" ]; then
 -    echo "Error: ANTHROPIC_API_KEY environment variable is not set"
 -    echo "Please set it with: export ANTHROPIC_API_KEY='your-key-here'"
--    exit 1
-+# Check for ANTHROPIC_API_KEY or OpenAI-compatible base URL
-+if [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$OPENCODE_WATCHER_BASE_URL" ] && [ -z "$OPENAI_BASE_URL" ]; then
-+    echo "Error: ANTHROPIC_API_KEY or OPENCODE_WATCHER_BASE_URL is required"
-+    echo "Example: export OPENCODE_WATCHER_BASE_URL='http://localhost:12134/v1'"
++# Check if opencode CLI is available
++if ! command -v opencode &> /dev/null; then
++    echo "Error: opencode CLI not found"
++    echo "Install with: npm install -g opencode"
++    echo "Or: npx opencode (to run directly)"
+     exit 1
  fi
  
  # Change to ELF directory
+ cd "$ELF_DIR"
+ 
+@@ -43,14 +47,16 @@ cd "$ELF_DIR"
+ DAEMON=false
+ if [ "$1" = "--daemon" ] || [ "$1" = "-d" ]; then
+     DAEMON=true
+ fi
+ 
++# Set default model if not specified
++export OPENCODE_WATCHER_MODEL="${OPENCODE_WATCHER_MODEL:-opencode/big-pickle}"
++
+ # Start launcher
+ if [ "$DAEMON" = true ]; then
+-    echo "Starting watcher in daemon mode..."
+-    nohup $PYTHON_CMD "$LAUNCHER_SCRIPT" > /dev/null 2>&1 &
++    echo "Starting OpenCode watcher (daemon mode)..."
++    echo "Model: $OPENCODE_WATCHER_MODEL"
++    nohup $PYTHON_CMD "$LAUNCHER_SCRIPT" > /tmp/elf-watcher.log 2>&1 &
+     PID=$!
+     echo "Watcher started with PID: $PID"
+-    echo "Monitor logs at: $ELF_DIR/.coordination/launcher.log"
++    echo "Monitor logs at: /tmp/elf-watcher.log"
+     echo "Stop with: kill $PID"
+ else
+-    echo "Starting watcher (Ctrl+C to stop)..."
++    echo "Starting OpenCode watcher..."
++    echo "Model: $OPENCODE_WATCHER_MODEL"
++    echo "Press Ctrl+C to stop"
+     $PYTHON_CMD "$LAUNCHER_SCRIPT"
+ fi

@@ -22,7 +22,7 @@ export default tool({
 
   async execute(args, context) {
     // Access context information
-    Bun.$` ${checkin_script} `
+    Bun.$`bash ${checkin_script} `
   },
 
   
