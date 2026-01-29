@@ -14,6 +14,7 @@ Run comprehensive database maintenance to keep all ELF systems healthy and popul
 ## Usage
 
 Run the maintenance script:
+
 ```bash
 python ~/.opencode/emergent-learning/scripts/maintenance.py
 ```
@@ -37,7 +38,7 @@ python ~/.opencode/emergent-learning/scripts/maintenance.py
 
 ## Example Output
 
-```
+```markdown
 ==================================================
 ELF Database Maintenance
 ==================================================

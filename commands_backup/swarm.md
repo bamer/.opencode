@@ -4,7 +4,7 @@ Spawn and manage coordinated agents using the blackboard pattern with access to 
 
 ## Usage
 
-```
+```bash
 /swarm [task]    # Execute task with agent picker
 /swarm show      # View full state
 /swarm reset     # Clear blackboard
@@ -13,7 +13,7 @@ Spawn and manage coordinated agents using the blackboard pattern with access to 
 
 ## Examples
 
-```
+```bash
 /swarm investigate the authentication system
 /swarm implement feature X
 /swarm show
@@ -29,7 +29,7 @@ Agents are loaded from `~/.opencode/agents/plugins/` with catalog at `~/.opencod
 ### Categories
 
 | Category | Agents | Use Case |
-|----------|--------|----------|
+| -------- | ------ | -------- |
 | **backend** | backend-architect, graphql-architect, fastapi-pro, django-pro, event-sourcing-architect | API design, microservices |
 | **frontend** | frontend-developer, mobile-developer, flutter-expert, ios-developer, ui-ux-designer | UI/UX, mobile apps |
 | **infrastructure** | cloud-architect, kubernetes-architect, terraform-specialist, deployment-engineer, devops-troubleshooter | DevOps, cloud |
@@ -51,6 +51,7 @@ Agents are loaded from `~/.opencode/agents/plugins/` with catalog at `~/.opencod
 **With task:** Start fresh coordinated execution
 
 1. **Initialize** (if needed):
+
    ```bash
    mkdir -p ~/.opencode/emergent-learning/.coordination
    python ~/.opencode/emergent-learning/watcher/watcher_loop.py clear
@@ -66,7 +67,8 @@ Agents are loaded from `~/.opencode/agents/plugins/` with catalog at `~/.opencod
    - Database → database-architect, sql-pro
 
 3. **Show agent picker**:
-   ```
+
+   ```markdown
    ## Swarm Plan
 
    **Task:** [task]
@@ -91,6 +93,7 @@ Agents are loaded from `~/.opencode/agents/plugins/` with catalog at `~/.opencod
 4. **Load agent persona** from pool:
 
    For each selected agent, read its persona:
+
    ```bash
    cat ~/.opencode/agents/plugins/*/agents/[agent-name].md | head -50
    ```
@@ -106,7 +109,7 @@ Agents are loaded from `~/.opencode/agents/plugins/` with catalog at `~/.opencod
    - Use `run_in_background: true` (Golden Rule #12)
    - Include agent persona in prompt
 
-   ```
+   ```markdown
    Task tool call:
    - description: "[SWARM] backend-architect: Design API"
    - prompt: |
@@ -129,12 +132,14 @@ Agents are loaded from `~/.opencode/agents/plugins/` with catalog at `~/.opencod
    - Tier 3 (Haiku): fast operational tasks
 
 6. **Spawn watcher** (optional but recommended):
+
    ```bash
    python ~/.opencode/emergent-learning/watcher/watcher_loop.py prompt
    ```
 
    Then spawn with Task tool:
-   ```
+
+   ```markdown
    - description: "[WATCHER] Monitor swarm"
    - subagent_type: "general-purpose"
    - model: "haiku"
@@ -147,6 +152,7 @@ Agents are loaded from `~/.opencode/agents/plugins/` with catalog at `~/.opencod
 8. **Synthesize** all findings into summary
 
 9. **Stop monitoring** when done:
+
    ```bash
    python ~/.opencode/emergent-learning/watcher/watcher_loop.py stop
    ```
@@ -158,6 +164,7 @@ python ~/.opencode/emergent-learning/watcher/watcher_loop.py status
 ```
 
 Also check blackboard:
+
 ```bash
 cat ~/.opencode/emergent-learning/.coordination/blackboard.json | python -m json.tool
 ```
@@ -165,6 +172,7 @@ cat ~/.opencode/emergent-learning/.coordination/blackboard.json | python -m json
 ### `/swarm reset` (Clear)
 
 Clear all state:
+
 ```bash
 rm -rf ~/.opencode/emergent-learning/.coordination/*
 ```
@@ -172,6 +180,7 @@ rm -rf ~/.opencode/emergent-learning/.coordination/*
 ### `/swarm stop` (Disable)
 
 Stop monitoring:
+
 ```bash
 python ~/.opencode/emergent-learning/watcher/watcher_loop.py stop
 ```
@@ -183,7 +192,7 @@ python ~/.opencode/emergent-learning/watcher/watcher_loop.py stop
 Use this reference when selecting agents:
 
 | Task Type | Primary Agents | Support Agents |
-|-----------|---------------|----------------|
+| --------- | ------------- | -------------- |
 | **New API** | backend-architect, graphql-architect | security-auditor, test-automator |
 | **Auth System** | security-auditor, backend-security-coder | backend-architect |
 | **Frontend Feature** | frontend-developer, ui-ux-designer | test-automator |
@@ -201,6 +210,7 @@ Use this reference when selecting agents:
 ## Finding Types
 
 Agents report in `## FINDINGS` section:
+
 - `[fact]` - Confirmed information
 - `[hypothesis]` - Suspected pattern
 - `[blocker]` - Cannot proceed

@@ -25,7 +25,7 @@ The `/checkout` command:
 
 `/checkout` closes the learning loop:
 
-```
+```markdown
 Session Start
     ↓
 /checkin (load context & golden rules)
@@ -40,19 +40,24 @@ Session End
 ## Interactive Flow
 
 ### 1. Banner
+
 Shows the checkout banner to signal session-end learning recording.
 
 ### 2. Active Plans Check
+
 If you have any open plans:
-```
+
+```markdown
 [*] 2 active plan(s) found:
    [5] Refactor authentication (domain: backend)
    [6] Add analytics feature (domain: frontend)
 ```
 
 ### 3. Postmortem Completion
+
 For each plan, you can complete it:
-```
+
+```markdown
 Complete postmortem for plan 5 (Refactor authentication)? [Y/n]: y
    Actual outcome: Completed 80% of original scope
    What diverged from plan? Discovery took longer
@@ -64,8 +69,10 @@ Complete postmortem for plan 5 (Refactor authentication)? [Y/n]: y
 The postmortem is recorded and linked to the plan.
 
 ### 4. Heuristic Discovery
+
 Capture reusable patterns:
-```
+
+```markdown
 [*] Heuristic Discovery
    Did you discover any reusable patterns or rules? [Y/n]: y
    Domain: backend
@@ -77,8 +84,10 @@ Capture reusable patterns:
 Stored in database + markdown for future reference.
 
 ### 5. Failure Documentation
+
 Document any unexpected failures:
-```
+
+```markdown
 [*] Failure Documentation
    Did anything break or fail unexpectedly? [Y/n]: y
    [+] Guidance: Create a failure analysis file at:
@@ -88,8 +97,10 @@ Document any unexpected failures:
 Provides template for manual documentation.
 
 ### 6. Quick Notes
+
 Save continuity notes:
-```
+
+```markdown
 [*] Quick Notes for Next Session
    > Remember: Add rate limiting to login endpoint
    [OK] Notes saved
@@ -98,8 +109,10 @@ Save continuity notes:
 Retrieved and displayed in next `/checkin`.
 
 ### 7. Session Summary
+
 Displays what was recorded:
-```
+
+```markdown
 [=] Session Summary
    Postmortems recorded: 1
    Heuristics recorded: 2
@@ -108,8 +121,10 @@ Displays what was recorded:
 ```
 
 ### 8. Complete
+
 Final confirmation:
-```
+
+```markdown
 [OK] Checkout complete. Session learnings recorded!
 ```
 
@@ -190,22 +205,26 @@ $ /checkout
 ## How It Integrates
 
 ### With Plans & Postmortems
+
 - Detects active plans from database
 - Completes postmortems and marks plans as done
 - Links postmortems to plans for analysis
 
 ### With Heuristics
+
 - Records patterns to database + markdown
 - Confidence tracking (0.0-1.0)
 - Domain categorization
 - Discoverable by `/search` and future sessions
 
 ### With Failure Analysis
+
 - Guides creation of failure-analysis/*.md files
 - Provides template structure
 - Captures root causes and lessons
 
 ### With Session Notes
+
 - Stores in ~/.checkout_notes
 - Displayed in next `/checkin`
 - Provides continuity across sessions
@@ -213,15 +232,19 @@ $ /checkout
 ## Troubleshooting
 
 ### No active plans shown
+
 Normal if you didn't create plans at session start. You can still record heuristics, failures, and notes.
 
 ### Database errors
+
 If you see "[!] Warning: Could not detect active plans", the database may be unavailable. Continue with heuristics/failures/notes - they'll still be recorded.
 
 ### Postmortem didn't save
+
 Check console output for errors. Ensure record-postmortem.py is accessible in scripts/ directory.
 
 ### Notes file error
+
 If notes don't save, check file permissions on ~/.checkout_notes. The file will be created automatically on first write.
 
 ## Golden Rule #6
@@ -240,8 +263,8 @@ This command implements **Golden Rule #6: "Record Learnings Before Ending Sessio
 
 ## Files Involved
 
-- Core: `src/query/checkout.py`
-- Skill: `src/skills/elf-checkout/SKILL.md`
+- Core: `query/checkout.py`
+- Skill: `skills/elf-checkout/SKILL.md`
 - Workflow: `.agent/workflows/checkout/workflow.md`
 - State: `~/.opencode/.elf_checkout_state`
 - Notes: `~/.opencode/.checkout_notes`
@@ -251,6 +274,7 @@ This command implements **Golden Rule #6: "Record Learnings Before Ending Sessio
 ## More Information
 
 See:
+
 - `.agent/workflows/checkout/workflow.md` for detailed workflow spec
-- `src/skills/elf-checkout/SKILL.md` for technical implementation
+- `skills/elf-checkout/SKILL.md` for technical implementation
 - `memory/golden-rules.md` for Golden Rule #6

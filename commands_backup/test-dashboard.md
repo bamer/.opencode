@@ -4,7 +4,7 @@ Run browser automation tests against the ELF dashboard with visual evidence capt
 
 ## Usage
 
-```
+```bash
 /test-dashboard              # Quick smoke test
 /test-dashboard full         # Full test with all tabs
 /test-dashboard [tab]        # Test specific tab
@@ -24,12 +24,14 @@ Run browser automation tests against the ELF dashboard with visual evidence capt
 ### `/test-dashboard` (Quick Smoke Test)
 
 1. **Check servers are running:**
+
    ```bash
    curl -s http://localhost:9222/ || echo "dev-browser not running"
    curl -s http://localhost:8888/api/stats || echo "Backend not running"
    ```
 
 2. **Run quick verification:**
+
    ```bash
    cd ~/.opencode/skills/dev-browser && bun x tsx <<'EOF'
    import { connect } from "./src/client.js";
@@ -180,12 +182,14 @@ EOF
 ## Integration with Learning Cycle
 
 When tests **FAIL**:
+
 1. Screenshot automatically captured to `tmp/`
 2. Copy evidence to `memory/screenshots/` with dated filename
 3. Record failure: `bash ~/.opencode/emergent-learning/scripts/record-failure.sh`
 4. Attach screenshot path in the `## Visual Evidence` section
 
 When tests **PASS**:
+
 1. Confidence increases for visual-testing heuristics
 2. Screenshots can be used as visual regression baselines
 
@@ -194,6 +198,7 @@ When tests **PASS**:
 ## Troubleshooting
 
 **dev-browser not responding:**
+
 ```bash
 # Kill and restart
 pkill -f "dev-browser"
@@ -205,6 +210,7 @@ Check what port frontend is using - it auto-increments if 3000 is busy.
 
 **Element refs changed:**
 Refs like `e14`, `e18` can change between page loads. Use text selectors as fallback:
+
 ```typescript
 await page.click("text=Heuristics");
 ```
