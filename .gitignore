@@ -9,5 +9,12 @@ backup/
 *.tmp
 *.swp
 *.swo
-.DS_Storebin/opencode
+.DS_Store
+
+# Ignore large binary files
+bin/opencode
+bin/
+node_modules/
+
+# Ignore submodule
 emergent-learning/
