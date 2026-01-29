@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+// CommonJS wrapper for opencode binary
+const path = require('path');
+const Module = require('module');
+
+// Load the original file as CommonJS
+const originalPath = '/home/bamer/Downloads/opencode-1.1.34/packages/opencode/bin/opencode';
+const code = require('fs').readFileSync(originalPath, 'utf8').slice(13); // Remove shebang
+
+// Execute as CommonJS
+const m = new Module();
+m._compile(code, originalPath);

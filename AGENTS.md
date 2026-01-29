@@ -5,6 +5,8 @@
 - Automatically removes Claude references from upstream files during sync.
 
 ## Commands
+
+### ELF Setup & Sync
 - **Main installer** (use this): `bash opencode_elf_install.sh` (interactive, validates, diagnoses, fixes, syncs)
 - **Validate setup**: `./scripts/validate-setup.sh` (optional, for troubleshooting)
 - **Sync** (update + backup + clean + install + plugin): `./scripts/opc-elf-sync.sh`
@@ -19,6 +21,15 @@
 - Upstream install (from ELF repo): `cd Emergent-Learning-Framework_ELF && ./install.sh`
 - Tests (upstream): `cd Emergent-Learning-Framework_ELF && make test`
 - Lint (upstream): `cd Emergent-Learning-Framework_ELF && make lint`
+
+### OpenCode HTTP API (port 4096) - NEW!
+- **Start OpenCode server**: `opencode serve --port 4096` (required for all agents)
+- **Test server**: `curl http://localhost:4096/global/health`
+- **Run all tests**: `bash run_unified_tests.sh` (validates all components)
+- **Single Agent test**: `python3 emergent-learning/agents/base_agent.py`
+- **Orchestrator test**: `python3 emergent-learning/src/orchestrator.py`
+- **Watcher**: `python3 emergent-learning/src/watcher/launcher.py`
+- **CEO Dashboard**: `python3 emergent-learning/agents/dashboard_sentinel_ceo.py --ceo`
 
 ## GitHub-Style Patches
 - Patch directory: `scripts/patches/` contains GitHub-style patch files
