@@ -25,7 +25,6 @@ MODES:
 - learning: Learning Extractor → Researcher → Architect (extract insights and structure)
 - all: Run all agents in sequence`,
   
-
   args: {
     task: tool.schema
       .string()
